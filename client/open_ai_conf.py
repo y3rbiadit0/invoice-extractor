@@ -8,19 +8,19 @@ class OpenAIConfig:
     model: str = "gpt-4o"
     temperature: float = 0.7
     prompt_text: str = (
-        f"You are a parser of italian invoices. You will receive text that is being parsed from pdf images. You will attempt extract the following data:"
-        f"invoice_id, invoice_issue_date, item_code, item_description, measure_unit, quantity, unit_price, total amount, supplier vat number, suppplier name"
-        f"Each item in the invoice must be transformed into a row that will refer to the same invoice_id"
-        "##############################"
-        "Considerations for data types:"
-            f"For quantities or prices, always set them as type float, to make them compatible for JSON format, so they can be serialized/deserialized."
-            f"For dates, always set them as type string using the YYYY-MM-DD format, so they can be serialized/deserialized."
-            f"For descriptions, always set them as uppercase string"
-            f"For total amount, only in case is not explicit, multiply `quantity` for `unit_price`, if not, take the value from parsing"
-        f"############################"
-        f"Task: extract the following data into the following response format:"
+        "You are a parser of Italian invoices. You will receive text that is being parsed from PDF images. "
+        "Your task is to extract the following fields for all items in the invoice:"
+        "\n- invoice_id\n- invoice_issue_date\n- item_code\n- item_description\n- measure_unit\n- quantity\n- unit_price\n- total_amount\n- supplier_vat_number\n- supplier_name"
+        "\n##############################"
+        "\n**Considerations for data types:**"
+        "\n- Quantities and prices should be floats."
+        "\n- Dates should be strings in the format YYYY-MM-DD."
+        "\n- Descriptions should be uppercase strings."
+        "\n- For total_amount, calculate it as quantity * unit_price if not explicit."
+        "\n##############################"
+        "\n**Output JSON format:** The JSON should include an array of items when an invoice contains multiple items. Example output for two items:"
         "["
-        '{"file_name": "invoice_1234.pdf", "invoice_id": "INV-2024-001", "issue_date": "2024-12-06", "item_code": "ITEM-001", "description": "Laptop", "measure_unit": "pcs", "quantity": "1", "unit_price": "1000.00", "total_amount": "1000.00", "supplier_name": "Tech Supplies Inc.", "supplier_vat_number": "123456789"}'
-        '{"file_name": "invoice_1234.pdf", "invoice_id": "INV-2024-001", "issue_date": "2024-12-06", "item_code": "ITEM-002", "description": "Laptop", "measure_unit": "pcs", "quantity": "1", "unit_price": "1000.00", "total_amount": "1000.00", "supplier_name": "Tech Supplies Inc.", "supplier_vat_number": "123456789"}'
-        "]."
+        '{"file_name": "invoice_1234.pdf", "invoice_id": "INV-2024-001", "issue_date": "2024-12-06", "item_code": "ITEM-001", "description": "LAPTOP", "measure_unit": "PCS", "quantity": 1.0, "unit_price": 1000.0, "total_amount": 1000.0, "supplier_name": "TECH SUPPLIES INC.", "supplier_vat_number": "123456789"},'
+        '{"file_name": "invoice_1234.pdf", "invoice_id": "INV-2024-001", "issue_date": "2024-12-06", "item_code": "ITEM-002", "description": "MOUSE", "measure_unit": "PCS", "quantity": 2.0, "unit_price": 25.0, "total_amount": 50.0, "supplier_name": "TECH SUPPLIES INC.", "supplier_vat_number": "123456789"}'
+        "]"
     )
