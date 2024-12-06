@@ -33,12 +33,16 @@ class App:
         logger.setLevel(logging.INFO)
 
     def process_files(self):
-        files = self._get_input_files(self._input_folder)
-        for file in files:
-            raw_data = self._extract_text(f"{self._input_folder}/{file}")
-            logger.info("Processing file: %s", file)
+        input_files = self._get_input_files(self._input_folder)
+
+        for input_file in input_files:
+            file_name = input_file.split(".")[0]
+            raw_data = self._extract_text(f"{self._input_folder}/{input_file}")
+            logger.info("Processing file: %s", input_file)
+
             invoice_model = self._parse_invoice(raw_data)[0]
-            invoice_model.file_name = file.split(".")[0]
+
+            invoice_model.file_name = file_name
             invoice_model.to_json(output_folder=f"{self._output_folder}")
             invoice_model.to_xlsx(output_folder=f"{self._output_folder}")
 
