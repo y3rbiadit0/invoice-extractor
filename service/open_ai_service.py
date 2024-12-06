@@ -15,5 +15,7 @@ class OpenAIService:
         self._config = OpenAIConfig()
 
     def parse_invoice(self, raw_invoice_text: str) -> List[GenericInvoiceModel]:
-        data = self._client.parsing_prompt(open_ai_config=self._config, raw_invoice_text=raw_invoice_text)
+        data = self._client.parsing_prompt(
+            open_ai_config=self._config, raw_invoice_text=raw_invoice_text
+        )
         return [data.choices[0].message.parsed]
