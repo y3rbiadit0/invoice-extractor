@@ -1,5 +1,5 @@
 import abc
-from typing import Optional
+from typing import Optional, Dict
 
 import pandas as pd
 from pydantic import BaseModel
@@ -17,7 +17,7 @@ class InvoiceModelInterface(abc.ABC):
 
 class GenericInvoiceModel(BaseModel, InvoiceModelInterface):
     file_name: str
-    doc_id: Optional[str]
+    invoice_id: Optional[str]
     issue_date: Optional[str]
     item_code: Optional[str]
     description: Optional[str]
@@ -30,13 +30,14 @@ class GenericInvoiceModel(BaseModel, InvoiceModelInterface):
 
     def to_xlsx(self):
         # Create a DataFrame
-        output_filename = f"{self.file_name.split('.')[0]}"
+        output_filename = f"{self.file_name.split('.')[0]}.xlsx"
 
-        df = pd.DataFrame([self.model_dump_json()])
+        df = pd.DataFrame([self.model_dump()])
 
         # Save to Excel
         df.to_excel(output_filename, index=False, engine="openpyxl")
 
     def to_json(self):
-        df = pd.DataFrame([self.model_dump_json()])
-        df.to_json(path_or_buf=f"{self.file_name.split('.')[0]}.json")
+        file_path = f"{self.file_name.split('.')[0]}.json"
+        with open(file_path, "w") as file:
+            file.write(self.model_dump_json(indent=4))
