@@ -29,3 +29,8 @@ OPENAI_API_KEY=FILL_ME_WITH_YOUR_API_KEY
 ```bash
 poetry run python main.py
 ```
+
+## 3. Next improvements:
+Process each file concurrently
+    1. Add `async` requests to the api
+    2. Create files asynchronously as well
