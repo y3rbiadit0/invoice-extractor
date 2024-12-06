@@ -13,7 +13,7 @@ class OpenAIConfig:
         "\n- invoice_id\n- invoice_issue_date\n- item_code\n- item_description\n- measure_unit\n- quantity\n- unit_price\n- total_amount\n- supplier_vat_number\n- supplier_name"
         "\n##############################"
         "\n**Considerations for data types:**"
-        "\n- Quantities and prices should be floats."
+        "\n- Quantities and prices should be floats. (Check for 'prezzo', 'quantita')"
         "\n- Dates should be strings in the format YYYY-MM-DD."
         "\n- Descriptions should be uppercase strings."
         "\n- For total_amount, calculate it as quantity * unit_price if not explicit."
