@@ -1,8 +1,8 @@
 from typing import List
 
-from client.open_ai_client import OpenAPIClient
-from client.open_ai_conf import OpenAIConfig
-from models import GenericInvoiceModel
+from ..client.open_ai_client import OpenAPIClient
+from ..client.open_ai_conf import OpenAIConfig
+from ..models import GenericInvoiceModel
 
 
 class OpenAIService:

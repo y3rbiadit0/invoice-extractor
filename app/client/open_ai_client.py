@@ -1,8 +1,9 @@
 from openai import OpenAI
 from openai.types.chat import ParsedChatCompletion
 
-from models import GenericInvoiceModel
+
 from .open_ai_conf import OpenAIConfig
+from ..models import GenericInvoiceModel
 
 
 class OpenAPIClient:

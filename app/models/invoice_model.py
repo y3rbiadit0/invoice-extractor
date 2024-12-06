@@ -1,5 +1,5 @@
 import abc
-from typing import Optional, Dict, List
+from typing import Optional, List
 
 import pandas as pd
 from pydantic import BaseModel

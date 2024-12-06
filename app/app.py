@@ -7,8 +7,8 @@ import dotenv
 import pytesseract
 from pdf2image import convert_from_path
 
-from models import GenericInvoiceModel
-from service.open_ai_service import OpenAIService
+from .models import GenericInvoiceModel
+from .service.open_ai_service import OpenAIService
 
 logger = logging.getLogger(__name__)
 
@@ -60,7 +60,3 @@ class App:
     def _parse_invoice(self, invoice_raw_data: str) -> List[GenericInvoiceModel]:
         invoice_articles = OpenAIService().parse_invoice(invoice_raw_data)
         return invoice_articles
-
-
-if __name__ == "__main__":
-    App().process_files()
