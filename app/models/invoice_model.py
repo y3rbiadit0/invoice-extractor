@@ -4,7 +4,7 @@ import logging
 from typing import Optional, List, Dict
 
 import pandas as pd
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 logger = logging.getLogger(__name__)
 
@@ -26,6 +26,15 @@ class InvoiceItemModel(BaseModel):
     unit_price: Optional[str]
     total_amount: Optional[str]
 
+    @field_validator("quantity", "unit_price", "total_amount", mode="before")
+    def clean_numeric_fields(cls, value):
+        if value is not None:
+            try:
+                # Remove commas and convert to float
+                return str(float(value.replace(",", "")))
+            except ValueError:
+                raise ValueError(f"Invalid numeric value: {value}")
+        return value
 
 class GenericInvoiceModel(BaseModel, InvoiceModelInterface):
     file_name: str
