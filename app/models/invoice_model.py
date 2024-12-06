@@ -1,10 +1,12 @@
 import abc
 import json
+import logging
 from typing import Optional, List, Dict
 
 import pandas as pd
 from pydantic import BaseModel
 
+logger = logging.getLogger(__name__)
 
 class InvoiceModelInterface(abc.ABC):
     @abc.abstractmethod
@@ -42,15 +44,15 @@ class GenericInvoiceModel(BaseModel, InvoiceModelInterface):
         return invoice_lines
 
     def to_xlsx(self, output_folder: str):
-        # Create a DataFrame
         output_filename = f"{output_folder}/{self.file_name.split('.')[0]}.xlsx"
-
         df = pd.DataFrame(self.invoice_lines())
 
         # Save to Excel
         df.to_excel(output_filename, index=False, engine="openpyxl")
+        logger.info(f"Wrote {output_filename}")
 
     def to_json(self, output_folder: str):
         file_path = f"{output_folder}/{self.file_name.split('.')[0]}.json"
         with open(file_path, "w") as file:
             file.write(json.dumps(self.invoice_lines(), indent=4))
+            logger.info(f"Wrote {file_path}")

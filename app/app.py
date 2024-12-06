@@ -30,7 +30,10 @@ class App:
         dotenv.load_dotenv()
 
     def _set_logger_config(self):
-        logger.setLevel(logging.INFO)
+        logging.basicConfig(
+            level=logging.INFO,
+            format='[%(asctime)s - %(levelname)s]: %(message)s',
+        )
 
     def process_files(self):
         input_files = self._get_input_files(self._input_folder)
