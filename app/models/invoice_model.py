@@ -1,5 +1,6 @@
 import abc
-from typing import Optional, List
+import json
+from typing import Optional, List, Dict
 
 import pandas as pd
 from pydantic import BaseModel
@@ -32,11 +33,19 @@ class GenericInvoiceModel(BaseModel, InvoiceModelInterface):
     supplier_name: Optional[str]
     supplier_vat_number: Optional[str]
 
+    def invoice_lines(self) -> List[Dict]:
+        invoice_lines = []
+        for invoice_item in self.invoice_items:
+            entry = self.model_dump(exclude={"invoice_items", "file_name"})
+            entry.update(invoice_item.model_dump())
+            invoice_lines.append(entry)
+        return invoice_lines
+
     def to_xlsx(self, output_folder: str):
         # Create a DataFrame
         output_filename = f"{output_folder}/{self.file_name.split('.')[0]}.xlsx"
 
-        df = pd.DataFrame([self.model_dump()])
+        df = pd.DataFrame(self.invoice_lines())
 
         # Save to Excel
         df.to_excel(output_filename, index=False, engine="openpyxl")
@@ -44,4 +53,4 @@ class GenericInvoiceModel(BaseModel, InvoiceModelInterface):
     def to_json(self, output_folder: str):
         file_path = f"{output_folder}/{self.file_name.split('.')[0]}.json"
         with open(file_path, "w") as file:
-            file.write(self.model_dump_json(indent=4))
+            file.write(json.dumps(self.invoice_lines(), indent=4))
