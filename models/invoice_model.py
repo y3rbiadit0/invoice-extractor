@@ -1,5 +1,5 @@
 import abc
-from typing import Optional, Dict
+from typing import Optional, Dict, List
 
 import pandas as pd
 from pydantic import BaseModel
@@ -15,16 +15,19 @@ class InvoiceModelInterface(abc.ABC):
         pass
 
 
-class GenericInvoiceModel(BaseModel, InvoiceModelInterface):
-    file_name: str
-    invoice_id: Optional[str]
-    issue_date: Optional[str]
+class InvoiceItemModel(BaseModel):
     item_code: Optional[str]
     description: Optional[str]
     measure_unit: Optional[str]
     quantity: Optional[str]
     unit_price: Optional[str]
     total_amount: Optional[str]
+
+class GenericInvoiceModel(BaseModel, InvoiceModelInterface):
+    file_name: str
+    invoice_id: Optional[str]
+    issue_date: Optional[str]
+    invoice_items: List[InvoiceItemModel]
     supplier_name: Optional[str]
     supplier_vat_number: Optional[str]
 
